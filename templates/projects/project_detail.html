@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load markdown_extras %}
+
+{% block title %}{{ project.title }} - Portfolio{% endblock %}
+
+{% block content %}
+<article class="project-detail">
+    <div class="container">
+        <a href="{% url 'home' %}" class="back-link">← Back to Home</a>
+        
+        <header class="project-header">
+            <h1 class="project-detail-title">{{ project.title }}</h1>
+        </header>
+
+        {% if project.featured_image %}
+        <div class="project-featured-image">
+            <img src="{{ project.featured_image.url }}" alt="{{ project.title }}">
+        </div>
+        {% endif %}
+
+        <div class="project-body">
+            <!-- Key Details Section -->
+            {% if project.role or project.time_frame or project.association %}
+            <div class="project-section-card">
+                <section class="project-section">
+                    <h2>Project Details</h2>
+                    <div class="details-grid">
+                        {% if project.role %}
+                        <div class="detail-item">
+                            <strong>Role:</strong> {{ project.role }}
+                        </div>
+                        {% endif %}
+                        {% if project.association %}
+                        <div class="detail-item">
+                            <strong>Association:</strong> {{ project.association }}
+                        </div>
+                        {% endif %}
+                        {% if project.time_frame %}
+                        <div class="detail-item">
+                            <strong>Duration:</strong> {{ project.time_frame }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </section>
+            </div>
+            {% endif %}
+
+            <div class="project-section-card">
+                <section class="project-description-section">
+                    <h2>About This Project</h2>
+                    <div class="project-full-description">{{ project.description|markdown }}</div>
+                </section>
+            </div>
+
+            <!-- Dynamic Custom Fields Section -->
+            {% if project.custom_fields %}
+                {% for key, value in project.custom_fields.items %}
+                    {% if key != 'github_url' and key != 'live_url' %}
+                    <div class="project-section-card">
+                        <section class="project-section">
+                            <h2>{{ key|prettify }}</h2>
+                            {% if value|is_list %}
+                                <ul class="highlights-list">
+                                    {% for item in value %}
+                                    <li>{{ item }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <div class="project-text-content">
+                                    {{ value|markdown }}
+                                </div>
+                            {% endif %}
+                        </section>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            
+            <!-- Project Links -->
+            {% if project.custom_fields.github_url or project.custom_fields.live_url %}
+            <div class="project-section-card" style="text-align: center;">
+                <div class="project-links" style="justify-content: center;">
+                    {% if project.custom_fields.github_url %}
+                    <a href="{{ project.custom_fields.github_url }}" target="_blank" class="btn btn-secondary">
+                        View on GitHub
+                    </a>
+                    {% endif %}
+                    {% if project.custom_fields.live_url %}
+                    <a href="{{ project.custom_fields.live_url }}" target="_blank" class="btn btn-primary">
+                        View Live Site
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</article>
+{% endblock %}

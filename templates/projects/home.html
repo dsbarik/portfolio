@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+{% load markdown_extras %}
+
+{% block title %}{{ profile.name }} - Portfolio{% endblock %}
+
+{% block content %}
+<div class="hero-intro">
+    <div class="container">
+        <div class="intro-content">
+            <h1 class="intro-name">Hi, I'm {{ profile.name }}</h1>
+            <h2 class="intro-title">{{ profile.title }}</h2>
+            <p class="intro-bio">{{ profile.bio }}</p>
+            <div class="intro-links">
+                <a href="mailto:{{ profile.email }}" class="btn btn-primary">
+                    <i class="fas fa-envelope"></i> Get In Touch
+                </a>
+                {% if profile.linkedin_url %}
+                <a href="{{ profile.linkedin_url }}" target="_blank" class="btn btn-secondary">
+                    <i class="fab fa-linkedin"></i> LinkedIn
+                </a>
+                {% endif %}
+                {% if profile.github_url %}
+                <a href="{{ profile.github_url }}" target="_blank" class="btn btn-secondary">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+                {% endif %}
+                {% if profile.kaggle_url %}
+                <a href="{{ profile.kaggle_url }}" target="_blank" class="btn btn-secondary">
+                    <i class="fab fa-kaggle"></i> Kaggle
+                </a>
+                {% endif %}
+                {% if profile.twitter_url %}
+                <a href="{{ profile.twitter_url }}" target="_blank" class="btn btn-secondary">
+                    <i class="fab fa-twitter"></i> Twitter
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% if experiences %}
+<section class="experience-section">
+    <div class="container">
+        <h2 class="section-title">Experience</h2>
+        <div class="experience-timeline">
+            {% for exp in experiences %}
+            <div class="experience-item">
+                <div class="experience-header">
+                    <div class="experience-title-group">
+                        <h3 class="experience-position">{{ exp.position }}</h3>
+                        <p class="experience-company">{{ exp.company }}</p>
+                        {% if exp.location %}
+                        <p class="experience-location"><i class="fas fa-map-marker-alt"></i> {{ exp.location }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="experience-duration">
+                        <i class="far fa-calendar"></i> {{ exp.duration }}
+                    </div>
+                </div>
+                <div class="experience-description">
+                    {{ exp.description|markdown }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+
+
+{% if projects %}
+<section class="projects-header">
+    <div class="container">
+        <h2 class="section-title">Featured Projects</h2>
+        <p class="section-subtitle">Check out some of my recent work</p>
+    </div>
+</section>
+
+<section class="projects-section">
+    <div class="container">
+            <div class="projects-grid">
+                {% for project in projects %}
+                <article class="project-card">
+                    {% if project.featured_image %}
+                    <div class="project-image">
+                        <img src="{{ project.featured_image.url }}" alt="{{ project.title }}">
+                    </div>
+                    {% endif %}
+                    <div class="project-content">
+                        <h2 class="project-title">
+                            <a href="{% url 'project_detail' project.slug %}" class="project-link">{{ project.title }}</a>
+                        </h2>
+                        
+                        <div class="project-meta-simple">
+                            {% if project.association %}
+                            <div class="project-association" title="Association/Client">
+                                <i class="fas fa-building"></i> {{ project.association }}
+                            </div>
+                            {% endif %}
+                            
+                            {% if project.time_frame %}
+                            <div class="project-timeframe" title="Time Frame">
+                                <i class="far fa-calendar-alt"></i> {{ project.time_frame }}
+                            </div>
+                            {% endif %}
+                            
+                            {% if project.role %}
+                            <div class="project-role-simple" title="Role">
+                                <i class="fas fa-user-tag"></i> {{ project.role }}
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <a href="{% url 'project_detail' project.slug %}" class="btn btn-primary project-btn-simple">View Project</a>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+    </div>
+</section>
+{% endif %}
+
+{% if education %}
+<section class="education-section" style="padding: 4rem 0; background: var(--bg-card);">
+    <div class="container">
+        <h2 class="section-title">Education</h2>
+        <div class="experience-timeline">
+            {% for edu in education %}
+            <div class="experience-item">
+                <div class="experience-header">
+                    <div>
+                        <h3 class="experience-position">{{ edu.degree }}</h3>
+                        <div class="experience-company">
+                            <i class="fas fa-university"></i> {{ edu.institution }}
+                            {% if edu.location %}
+                            <span class="experience-location">
+                                <i class="fas fa-map-marker-alt"></i> {{ edu.location }}
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="experience-duration">
+                        <i class="far fa-calendar-alt"></i> {{ edu.duration }}
+                    </div>
+                </div>
+                {% if edu.description %}
+                <div class="experience-description">
+                    {{ edu.description|safe }}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% endblock %}

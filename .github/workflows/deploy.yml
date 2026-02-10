@@ -41,6 +41,11 @@ jobs:
       - name: Generate static site with django-distill
         run: uv run python manage.py distill-local dist --force
 
+      - name: Copy static and media files to dist
+        run: |
+          cp -r staticfiles dist/static
+          cp -r media dist/media
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 

@@ -27,8 +27,8 @@ DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
-# Force script name for GitHub Pages subdirectory deployment
-FORCE_SCRIPT_NAME = "/portfolio"
+# Django-distill configuration for GitHub Pages subdirectory
+DISTILL_PUBLISH_ROOT_URL = "/portfolio/"
 
 
 # Application definition

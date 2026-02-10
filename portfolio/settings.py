@@ -29,6 +29,7 @@ ALLOWED_HOSTS = ["*"]
 
 # Django-distill configuration for GitHub Pages subdirectory
 DISTILL_PUBLISH_ROOT_URL = "/portfolio/"
+FORCE_SCRIPT_NAME = "/portfolio"
 
 
 # Application definition

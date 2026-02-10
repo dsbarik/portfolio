@@ -46,6 +46,11 @@ jobs:
           cp -r staticfiles dist/static
           cp -r media dist/media
 
+      - name: Fix URLs for GitHub Pages subdirectory
+        run: |
+          find dist -name "*.html" -type f -exec sed -i 's|href="/"|href="/portfolio/"|g' {} +
+          find dist -name "*.html" -type f -exec sed -i 's|href="/project/|href="/portfolio/project/|g' {} +
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 

@@ -35,6 +35,9 @@ jobs:
       - name: Install dependencies
         run: uv sync
 
+      - name: Set DEBUG=False for production
+        run: sed -i 's/DEBUG = True/DEBUG = False/g' portfolio/settings.py
+
       - name: Collect static files
         run: uv run python manage.py collectstatic --noinput
 

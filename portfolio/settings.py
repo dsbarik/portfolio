@@ -23,13 +23,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-htfl4y=isx@v8n-=s)#$h5l-ty=m47snw^ki9e@#@mwm3&ux=4"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True  # Set to False for production builds
 
 ALLOWED_HOSTS = ["*"]
 
 # Django-distill configuration for GitHub Pages subdirectory
-DISTILL_PUBLISH_ROOT_URL = "/portfolio/"
-FORCE_SCRIPT_NAME = "/portfolio"
+# Only use /portfolio/ prefix when building for production
+if not DEBUG:
+    DISTILL_PUBLISH_ROOT_URL = "/portfolio/"
+    FORCE_SCRIPT_NAME = "/portfolio"
 
 
 # Application definition
@@ -123,13 +125,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = "/portfolio/static/"
+STATIC_URL = "/portfolio/static/" if not DEBUG else "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
 # Media files (User uploaded content)
-MEDIA_URL = "/portfolio/media/"
+MEDIA_URL = "/portfolio/media/" if not DEBUG else "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 # Default primary key field type
